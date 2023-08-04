@@ -13,10 +13,12 @@ import { Card } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
-function ParcCreate() {
+function EnginCreate() {
   const navigate = useNavigate();
 
   const [typeparcs, setTypeparcs] = useState([]);
+  const [parcs, setParcs] = useState([]);
+  const [sites, setSites] = useState([]);
 
   useEffect(() => {
     // check if logged in, else redirect to login page
@@ -34,33 +36,69 @@ function ParcCreate() {
         if (response.data.error) {
           alert(response.data.error);
         } else {
-          console.log(response.data);
           setTypeparcs(response.data);
         }
       });
     // }
+
+    axios
+      .get(
+        `${process.env.REACT_APP_BASE_URL}/sites`
+        // , {
+        // headers: { accessToken: localStorage.getItem("accessToken") },
+        // }
+      )
+      .then((response) => {
+        if (response.data.error) {
+          alert(response.data.error);
+        } else {
+          setSites(response.data);
+        }
+      });
   }, []);
 
   const initialValues = {
     title: "",
     description: "",
-    TypeParcId: "",
+    ParcId: "",
+    SiteId: "",
   };
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().min(2).max(45).required(),
     description: Yup.string().min(2).max(45).required(),
-    TypeParcId: Yup.string().required(),
+    ParcId: Yup.string().required(),
+    SiteId: Yup.string().required(),
   });
 
   const onSubmit = (data) => {
+    console.log(data);
     axios
-      .post(`${process.env.REACT_APP_BASE_URL}/parcs`, data)
+      .post(`${process.env.REACT_APP_BASE_URL}/engins`, data)
       .then((response) => {
         if (response.data.error) {
           alert(response.data.error);
         } else {
           navigate(-1);
+        }
+      });
+  };
+
+  const onTypeParcChange = (e) => {
+    const _typeparcId = e.target.value;
+    axios
+      .get(
+        `${process.env.REACT_APP_BASE_URL}/parcs/byTypeparcId/${_typeparcId}`
+        // , {
+        // headers: { accessToken: localStorage.getItem("accessToken") },
+        // }
+      )
+      .then((response) => {
+        // console.log(response.data);
+        if (response.data.error) {
+          alert(response.data.error);
+        } else {
+          setParcs(response.data);
         }
       });
   };
@@ -100,6 +138,7 @@ function ParcCreate() {
                 placeholder="Nom du typeparc (Ex : Roulage, Terrassement, ...)"
                 autoComplete="off"
                 as="select"
+                onChange={onTypeParcChange}
               >
                 <option value="">---- Choisir un type de parc</option>
                 {typeparcs.map((typeparc, key) => {
@@ -112,6 +151,56 @@ function ParcCreate() {
               </Field>
               <ErrorMessage
                 name="TypeParcId"
+                component="div"
+                className="text-danger text-left "
+              />
+            </div>
+
+            <div className="mt-2  ">
+              <Field
+                className="form-control text-uppercase"
+                id="ParcId"
+                name="ParcId"
+                placeholder="Nom du typeparc (Ex : Roulage, Terrassement, ...)"
+                autoComplete="off"
+                as="select"
+              >
+                <option value="">---- Choisir un parc</option>
+                {parcs.map((parc, key) => {
+                  return (
+                    <option key={key} value={parc.id}>
+                      {parc.title}
+                    </option>
+                  );
+                })}
+              </Field>
+              <ErrorMessage
+                name="ParcId"
+                component="div"
+                className="text-danger text-left "
+              />
+            </div>
+
+            <div className="mt-2  ">
+              <Field
+                className="form-control text-uppercase"
+                id="SiteId"
+                name="SiteId"
+                placeholder="Nom du typeparc (Ex : Roulage, Terrassement, ...)"
+                autoComplete="off"
+                as="select"
+              >
+                <option value="">---- Choisir un site</option>
+                {sites.map((site, key) => {
+                  return (
+                    <option key={key} value={site.id}>
+                      {site.title}
+                    </option>
+                  );
+                })}
+              </Field>
+              <ErrorMessage
+                name="SiteId"
                 component="div"
                 className="text-danger text-left "
               />
@@ -145,4 +234,4 @@ function ParcCreate() {
   );
 }
 
-export default ParcCreate;
+export default EnginCreate;
