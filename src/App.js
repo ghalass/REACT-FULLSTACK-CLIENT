@@ -25,14 +25,18 @@ import SiteUpdate from "./components/Sites/SiteUpdate";
 import SitesList from "./components/Sites/SitesList";
 import SiteCreate from "./components/Sites/SiteCreate";
 //SITES ROUTES
-//SITES ROUTES
 import TypeParcs from "./pages/Config/TypeParcs";
 import TypeParcsList from "./components/TypeParcs/TypeParcsList";
 import TypeParcCreate from "./components/TypeParcs/TypeParcCreate";
 import TypeParcUpdate from "./components/TypeParcs/TypeParcUpdate";
 import TypeParcDelete from "./components/TypeParcs/TypeParcDelete";
-//
+//SITES ROUTES
 import Parcs from "./pages/Config/Parcs";
+import ParcsList from "./components/Parcs/ParcsList";
+import ParcCreate from "./components/Parcs/ParcCreate";
+// import ParcUpdate from "./components/Parcs/ParcUpdate";
+// import ParcDelete from "./components/Parcs/ParcDelete";
+//
 import Engins from "./pages/Config/Engins";
 
 function App() {
@@ -98,8 +102,15 @@ function App() {
                 <Route path=":id/delete" element={<TypeParcDelete />} />
               </Route>
 
-              <Route path="typeparcs" exact element={<TypeParcs />} />
-              <Route path="parcs" exact element={<Parcs />} />
+              {/* PARCS  */}
+              <Route path="parcs" element={<Parcs />}>
+                <Route index exact element={<ParcsList />} />
+                <Route path="create" element={<ParcCreate />} />
+                {/* <Route path=":id/details" element={<SiteDetails />} /> */}
+                {/* <Route path=":id/update" element={<ParcUpdate />} /> */}
+                {/* <Route path=":id/delete" element={<ParcDelete />} /> */}
+              </Route>
+
               <Route path="engins" exact element={<Engins />} />
             </Route>
 

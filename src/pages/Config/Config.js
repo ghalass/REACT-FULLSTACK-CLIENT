@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Nav from "react-bootstrap/Nav";
 
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 // fonts awsome icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -11,8 +11,16 @@ import {
   faTruckMonster,
 } from "@fortawesome/free-solid-svg-icons";
 
-function Config(props) {
-  const [active, setActive] = useState("sites");
+function Config() {
+  const location = useLocation();
+  const [active, setActive] = useState("");
+
+  useEffect(() => {
+    const pathArray = location.pathname.split("/");
+    const pathArrayLength = pathArray.length;
+    const actived = pathArray[pathArrayLength - 1];
+    setActive(actived);
+  });
 
   return (
     <div className="">

@@ -13,20 +13,18 @@ import { useState } from "react";
 import moment from "moment";
 import frLocale from "moment/locale/fr";
 
-function TypeParcsList() {
+function ParcsList() {
   moment.locale("fr", [frLocale]); // can pass in 'en', 'fr', or 'es'
   const [listOfObjects, setListOfObjects] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_BASE_URL}/typeparcs`)
-      .then((response) => {
-        if (!response.data.error) {
-          setListOfObjects(response.data);
-        } else {
-          alert(response.data.error);
-        }
-      });
+    axios.get(`${process.env.REACT_APP_BASE_URL}/parcs`).then((response) => {
+      if (!response.data.error) {
+        setListOfObjects(response.data);
+      } else {
+        alert(response.data.error);
+      }
+    });
   }, []);
   return (
     <Card className="shadow-sm">
@@ -74,4 +72,4 @@ function TypeParcsList() {
   );
 }
 
-export default TypeParcsList;
+export default ParcsList;
