@@ -38,8 +38,13 @@ import ParcCreate from "./components/Parcs/ParcCreate";
 import ParcUpdate from "./components/Parcs/ParcUpdate";
 import ParcDelete from "./components/Parcs/ParcDelete";
 import ParcDetails from "./components/Parcs/ParcDetails";
-//
+//Parcs ROUTES
 import Engins from "./pages/Config/Engins";
+import EnginsList from "./components/Engins/EnginsList";
+// import ParcCreate from "./components/Parcs/ParcCreate";
+// import ParcUpdate from "./components/Parcs/ParcUpdate";
+// import ParcDelete from "./components/Parcs/ParcDelete";
+// import ParcDetails from "./components/Parcs/ParcDetails";
 
 function App() {
   // console.log(process.env.REACT_APP_BASE_URL);
@@ -113,7 +118,14 @@ function App() {
                 <Route path=":id/delete" element={<ParcDelete />} />
               </Route>
 
-              <Route path="engins" exact element={<Engins />} />
+              {/* ENGINS  */}
+              <Route path="engins" element={<Engins />}>
+                <Route index exact element={<EnginsList />} />
+                {/* <Route path="create" element={<ParcCreate />} /> */}
+                {/* <Route path=":id/details" element={<ParcDetails />} /> */}
+                {/* <Route path=":id/update" element={<ParcUpdate />} /> */}
+                {/* <Route path=":id/delete" element={<ParcDelete />} /> */}
+              </Route>
             </Route>
 
             <Route path="*" exact element={<PageNotFound />} />

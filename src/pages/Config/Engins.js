@@ -1,12 +1,45 @@
 import React from "react";
-import Config from "./Config";
+import { Link, Outlet } from "react-router-dom";
+import Nav from "react-bootstrap/Nav";
+
+// fonts awsome icons
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faList } from "@fortawesome/free-solid-svg-icons";
 
 function Engins() {
+  // Params
   return (
-    <div>
-      <Config active="engins">
-        <h6>Engins</h6>
-      </Config>
+    <div className="">
+      <Nav
+        defaultActiveKey="/config/typeparcs"
+        className="AppHeader-localBar border-bottom"
+      >
+        <Nav.Item className="px-1">
+          <Nav.Link
+            className="activeLink"
+            eventKey="activeLink"
+            as={Link}
+            to=""
+          >
+            <span>
+              <FontAwesomeIcon icon={faList} className="mx-2" />
+              Liste
+            </span>
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item className="px-1">
+          <Nav.Link as={Link} to="create">
+            <span>
+              <FontAwesomeIcon icon={faPlus} className="mx-2" />
+              Ajouter
+            </span>
+          </Nav.Link>
+        </Nav.Item>
+      </Nav>
+
+      <div className="text-left m-2 p-2">
+        <Outlet />
+      </div>
     </div>
   );
 }
