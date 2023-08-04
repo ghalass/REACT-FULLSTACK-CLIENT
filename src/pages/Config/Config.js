@@ -27,7 +27,6 @@ function Config(props) {
             as={Link}
             to="sites"
             onClick={() => {
-              console.log("sites");
               setActive("sites");
             }}
           >
@@ -43,7 +42,6 @@ function Config(props) {
             as={Link}
             to="/config/typeparcs"
             onClick={() => {
-              console.log("typeparcs");
               setActive("typeparcs");
             }}
           >
@@ -59,7 +57,6 @@ function Config(props) {
             as={Link}
             to="/config/parcs"
             onClick={() => {
-              console.log("parcs");
               setActive("parcs");
             }}
           >
@@ -75,7 +72,6 @@ function Config(props) {
             as={Link}
             to="/config/engins"
             onClick={() => {
-              console.log("engins");
               setActive("engins");
             }}
           >

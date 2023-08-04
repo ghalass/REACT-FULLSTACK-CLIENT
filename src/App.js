@@ -29,6 +29,7 @@ import SiteCreate from "./components/Sites/SiteCreate";
 import TypeParcs from "./pages/Config/TypeParcs";
 import TypeParcsList from "./components/TypeParcs/TypeParcsList";
 import TypeParcCreate from "./components/TypeParcs/TypeParcCreate";
+import TypeParcUpdate from "./components/TypeParcs/TypeParcUpdate";
 //
 import Parcs from "./pages/Config/Parcs";
 import Engins from "./pages/Config/Engins";
@@ -91,9 +92,9 @@ function App() {
               <Route path="typeparcs" element={<TypeParcs />}>
                 <Route index exact element={<TypeParcsList />} />
                 <Route path="create" element={<TypeParcCreate />} />
-                {/* <Route path=":id/details" element={<SiteDetails />} />
-                <Route path=":id/update" element={<SiteUpdate />} />
-                <Route path=":id/delete" element={<SiteDelete />} /> */}
+                {/* <Route path=":id/details" element={<SiteDetails />} /> */}
+                <Route path=":id/update" element={<TypeParcUpdate />} />
+                {/* <Route path=":id/delete" element={<SiteDelete />} /> */}
               </Route>
 
               <Route path="typeparcs" exact element={<TypeParcs />} />
