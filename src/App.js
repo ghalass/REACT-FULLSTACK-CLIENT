@@ -35,7 +35,7 @@ import Parcs from "./pages/Config/Parcs";
 import ParcsList from "./components/Parcs/ParcsList";
 import ParcCreate from "./components/Parcs/ParcCreate";
 import ParcUpdate from "./components/Parcs/ParcUpdate";
-// import ParcDelete from "./components/Parcs/ParcDelete";
+import ParcDelete from "./components/Parcs/ParcDelete";
 //
 import Engins from "./pages/Config/Engins";
 
@@ -108,7 +108,7 @@ function App() {
                 <Route path="create" element={<ParcCreate />} />
                 {/* <Route path=":id/details" element={<SiteDetails />} /> */}
                 <Route path=":id/update" element={<ParcUpdate />} />
-                {/* <Route path=":id/delete" element={<ParcDelete />} /> */}
+                <Route path=":id/delete" element={<ParcDelete />} />
               </Route>
 
               <Route path="engins" exact element={<Engins />} />

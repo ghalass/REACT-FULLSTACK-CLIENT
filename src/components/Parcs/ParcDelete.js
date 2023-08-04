@@ -5,7 +5,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 import frLocale from "moment/locale/fr";
 
-function TypeParcDelete() {
+function ParcDelete() {
   const { id } = useParams();
   const [object, setObject] = useState({});
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ function TypeParcDelete() {
     // } else {
     axios
       .get(
-        `${process.env.REACT_APP_BASE_URL}/typeparcs/byId/${id}`
+        `${process.env.REACT_APP_BASE_URL}/parcs/byId/${id}`
         // , {
         // headers: { accessToken: localStorage.getItem("accessToken") },
         // }
@@ -32,7 +32,7 @@ function TypeParcDelete() {
     // console.log(SiteId);
     axios
       .delete(
-        `${process.env.REACT_APP_BASE_URL}/typeparcs/${_id}`
+        `${process.env.REACT_APP_BASE_URL}/parcs/${_id}`
         // , {
         // headers: {
         //   accessToken: localStorage.getItem("accessToken"),
@@ -75,7 +75,7 @@ function TypeParcDelete() {
                   oui
                 </button>
                 <Link
-                  to={`/config/typeparcs`}
+                  to={`/config/parcs`}
                   className="ml-2 btn btn-sm btn-outline-success"
                 >
                   non
@@ -89,4 +89,4 @@ function TypeParcDelete() {
   );
 }
 
-export default TypeParcDelete;
+export default ParcDelete;
