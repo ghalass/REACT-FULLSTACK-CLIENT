@@ -28,7 +28,7 @@ function ParcDelete() {
     // }
   }, []);
 
-  const deleteSite = (_id) => {
+  const deleteObject = (_id) => {
     // console.log(SiteId);
     axios
       .delete(
@@ -69,7 +69,7 @@ function ParcDelete() {
                 <button
                   className="mr-4 btn btn-sm btn-outline-danger text-uppercase"
                   onClick={() => {
-                    deleteSite(object.id);
+                    deleteObject(object.id);
                   }}
                 >
                   oui

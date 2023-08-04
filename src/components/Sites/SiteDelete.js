@@ -28,7 +28,7 @@ function SiteDelete() {
     // }
   }, []);
 
-  const deleteSite = (SiteId) => {
+  const deleteObject = (SiteId) => {
     // console.log(SiteId);
     axios
       .delete(
@@ -69,7 +69,7 @@ function SiteDelete() {
                 <button
                   className="mr-4 btn btn-sm btn-outline-danger text-uppercase"
                   onClick={() => {
-                    deleteSite(site.id);
+                    deleteObject(site.id);
                   }}
                 >
                   oui

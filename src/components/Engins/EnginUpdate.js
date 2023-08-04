@@ -13,11 +13,13 @@ import { Card } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
-function ParcUpdate() {
+function EnginUpdate() {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [typeparcs, setTypeparcs] = useState([]);
+  const [parcs, setParcs] = useState([]);
+  const [sites, setSites] = useState([]);
 
   useEffect(() => {
     // check if logged in, else redirect to login page
@@ -39,18 +41,35 @@ function ParcUpdate() {
         }
       });
     // }
+
+    axios
+      .get(
+        `${process.env.REACT_APP_BASE_URL}/sites`
+        // , {
+        // headers: { accessToken: localStorage.getItem("accessToken") },
+        // }
+      )
+      .then((response) => {
+        if (response.data.error) {
+          alert(response.data.error);
+        } else {
+          setSites(response.data);
+        }
+      });
   }, []);
 
   const initialValues = {
     title: "",
     description: "",
-    TypeParcId: "",
+    ParcId: "",
+    SiteId: "",
   };
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().min(2).max(45).required(),
     description: Yup.string().min(2).max(45).required(),
-    TypeParcId: Yup.string().required(),
+    ParcId: Yup.string().required(),
+    SiteId: Yup.string().required(),
   });
 
   // const formik = useFormik({
@@ -59,15 +78,20 @@ function ParcUpdate() {
   // });
 
   const onSubmit = (data) => {
+    // enlever TypeParcId de l'objet
+    const { TypeParcId, ...restOfData } = data;
+    restOfData.id = id;
+    console.log(restOfData);
     axios
       .put(
-        `${process.env.REACT_APP_BASE_URL}/parcs`,
-        { id: id, title: data.title, TypeParcId: data.TypeParcId }
+        `${process.env.REACT_APP_BASE_URL}/engins`,
+        restOfData
         // , {
         // headers: { accessToken: localStorage.getItem("accessToken") },
         // }
       )
       .then((response) => {
+        console.log(response.data);
         if (response.data.error) {
           alert(response.data.error);
         } else {
@@ -88,9 +112,9 @@ function ParcUpdate() {
           validationSchema={validationSchema}
         >
           {function Render({ errors, touched, isSubmitting, setFieldValue }) {
-            const [_title, _setTitle] = useState("");
-            const [_description, _setDescription] = useState("");
-            const [_TypeParcId, _setTypeParcId] = useState("");
+            const [_typeparcs, _setTypeparcs] = useState([]);
+            const [_parcs, _setParcs] = useState([]);
+            const [_sites, _setSites] = useState([]);
 
             useEffect(() => {
               // check if logged in, else redirect to login page
@@ -99,12 +123,13 @@ function ParcUpdate() {
               // } else {
               axios
                 .get(
-                  `${process.env.REACT_APP_BASE_URL}/parcs/byId/${id}`
+                  `${process.env.REACT_APP_BASE_URL}/engins/byId/${id}`
                   // , {
                   // headers: { accessToken: localStorage.getItem("accessToken") },
                   // }
                 )
                 .then((response) => {
+                  // console.log(response.data);
                   if (response.data.error) {
                     alert(response.data.error);
                   } else {
@@ -114,32 +139,68 @@ function ParcUpdate() {
                       response.data.description,
                       true
                     );
+                    setFieldValue("SiteId", response.data.SiteId, true);
                     setFieldValue(
                       "TypeParcId",
-                      response.data.TypeParc.id,
+                      response.data.Parc.TypeParcId,
                       true
                     );
+                    setFieldValue("ParcId", response.data.ParcId, true);
+                    axios
+                      .get(
+                        `${process.env.REACT_APP_BASE_URL}/parcs/byTypeparcId/${response.data.Parc.TypeParcId}`
+                        // , {
+                        // headers: { accessToken: localStorage.getItem("accessToken") },
+                        // }
+                      )
+                      .then((res) => {
+                        // console.log(res.data);
+                        if (res.data.error) {
+                          alert(res.data.error);
+                        } else {
+                          setParcs(res.data);
+                        }
+                      });
                   }
                 });
               // }
             }, []);
+
+            const onTypeParcChange = (e) => {
+              const _typeparcId = e.target.value;
+
+              axios
+                .get(
+                  `${process.env.REACT_APP_BASE_URL}/parcs/byTypeparcId/${_typeparcId}`
+                  // , {
+                  // headers: { accessToken: localStorage.getItem("accessToken") },
+                  // }
+                )
+                .then((response) => {
+                  // console.log(response.data);
+                  if (response.data.error) {
+                    alert(response.data.error);
+                  } else {
+                    setParcs(response.data);
+                    setFieldValue("TypeParcId", _typeparcId, true);
+                  }
+                });
+            };
+
             return (
               <Form>
                 <div className="mt-2  ">
                   <Field
-                    className={
-                      "form-control" +
-                      (errors.title && touched.title ? " is-invalid" : "")
-                    }
+                    className="form-control "
                     id="title"
                     name="title"
-                    placeholder="Nom du typeparc"
+                    placeholder="Nom du typeparc (Ex : Roulage, Terrassement, ...)"
                     autoComplete="off"
                   />
                   <ErrorMessage
                     name="title"
                     component="div"
-                    className="invalid-feedback"
+                    className="text-danger text-left "
                   />
                 </div>
 
@@ -151,6 +212,7 @@ function ParcUpdate() {
                     placeholder="Nom du typeparc (Ex : Roulage, Terrassement, ...)"
                     autoComplete="off"
                     as="select"
+                    onChange={onTypeParcChange}
                   >
                     <option value="">---- Choisir un type de parc</option>
                     {typeparcs.map((typeparc, key) => {
@@ -170,10 +232,60 @@ function ParcUpdate() {
 
                 <div className="mt-2  ">
                   <Field
+                    className="form-control text-uppercase"
+                    id="ParcId"
+                    name="ParcId"
+                    placeholder="Nom du typeparc (Ex : Roulage, Terrassement, ...)"
+                    autoComplete="off"
+                    as="select"
+                  >
+                    <option value="">---- Choisir un parc</option>
+                    {parcs.map((parc, key) => {
+                      return (
+                        <option key={key} value={parc.id}>
+                          {parc.title}
+                        </option>
+                      );
+                    })}
+                  </Field>
+                  <ErrorMessage
+                    name="ParcId"
+                    component="div"
+                    className="text-danger text-left "
+                  />
+                </div>
+
+                <div className="mt-2  ">
+                  <Field
+                    className="form-control text-uppercase"
+                    id="SiteId"
+                    name="SiteId"
+                    placeholder="Nom du typeparc (Ex : Roulage, Terrassement, ...)"
+                    autoComplete="off"
+                    as="select"
+                  >
+                    <option value="">---- Choisir un site</option>
+                    {sites.map((site, key) => {
+                      return (
+                        <option key={key} value={site.id}>
+                          {site.title}
+                        </option>
+                      );
+                    })}
+                  </Field>
+                  <ErrorMessage
+                    name="SiteId"
+                    component="div"
+                    className="text-danger text-left "
+                  />
+                </div>
+
+                <div className="mt-2  ">
+                  <Field
                     className="form-control "
                     id="description"
                     name="description"
-                    placeholder="Description du parc"
+                    placeholder="Description du typeparc"
                     autoComplete="off"
                   />
                   <ErrorMessage
@@ -189,7 +301,7 @@ function ParcUpdate() {
                     type="submit"
                   >
                     <FontAwesomeIcon icon={faPlus} className="mr-2" />
-                    Modifier
+                    Créer
                   </button>
                 </div>
               </Form>
@@ -201,4 +313,4 @@ function ParcUpdate() {
   );
 }
 
-export default ParcUpdate;
+export default EnginUpdate;

@@ -5,7 +5,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 import frLocale from "moment/locale/fr";
 
-function ParcDelete() {
+function EnginDelete() {
   const { id } = useParams();
   const [object, setObject] = useState({});
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ function ParcDelete() {
     // } else {
     axios
       .get(
-        `${process.env.REACT_APP_BASE_URL}/parcs/byId/${id}`
+        `${process.env.REACT_APP_BASE_URL}/engins/byId/${id}`
         // , {
         // headers: { accessToken: localStorage.getItem("accessToken") },
         // }
@@ -28,11 +28,11 @@ function ParcDelete() {
     // }
   }, []);
 
-  const deleteSite = (_id) => {
+  const deleteObject = (_id) => {
     // console.log(SiteId);
     axios
       .delete(
-        `${process.env.REACT_APP_BASE_URL}/parcs/${_id}`
+        `${process.env.REACT_APP_BASE_URL}/engins/${_id}`
         // , {
         // headers: {
         //   accessToken: localStorage.getItem("accessToken"),
@@ -69,13 +69,13 @@ function ParcDelete() {
                 <button
                   className="mr-4 btn btn-sm btn-outline-danger text-uppercase"
                   onClick={() => {
-                    deleteSite(object.id);
+                    deleteObject(object.id);
                   }}
                 >
                   oui
                 </button>
                 <Link
-                  to={`/config/parcs`}
+                  to={`/config/engins`}
                   className="ml-2 btn btn-sm btn-outline-success"
                 >
                   non
@@ -89,4 +89,4 @@ function ParcDelete() {
   );
 }
 
-export default ParcDelete;
+export default EnginDelete;

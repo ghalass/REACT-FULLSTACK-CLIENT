@@ -5,7 +5,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 import frLocale from "moment/locale/fr";
 
-function ParcDetails() {
+function EnginDetails() {
   const { id } = useParams();
   const [objet, setObject] = useState({});
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ function ParcDetails() {
   useEffect(() => {
     axios
       .get(
-        `${process.env.REACT_APP_BASE_URL}/parcs/byId/${id}`
+        `${process.env.REACT_APP_BASE_URL}/engins/byId/${id}`
         // , {
         // headers: { accessToken: localStorage.getItem("accessToken") },
         // }
@@ -48,4 +48,4 @@ function ParcDetails() {
   );
 }
 
-export default ParcDetails;
+export default EnginDetails;
