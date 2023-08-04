@@ -17,8 +17,7 @@ function Config() {
 
   useEffect(() => {
     const pathArray = location.pathname.split("/");
-    const pathArrayLength = pathArray.length;
-    const actived = pathArray[pathArrayLength - 1];
+    const actived = pathArray[2];
     setActive(actived);
   });
 

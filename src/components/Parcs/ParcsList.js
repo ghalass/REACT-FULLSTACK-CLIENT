@@ -52,6 +52,13 @@ function ParcsList() {
                       >
                         {object.title}
                       </Link>
+                      <span className="mx-2">|</span>
+                      <Link
+                        to={`/config/typeparcs/${object.TypeParc.id}/details`}
+                        className="text-uppercase"
+                      >
+                        {object.TypeParc.title}
+                      </Link>
                     </div>
                     <div className="col-4 d-flex  justify-content-around border-left">
                       <Link to={`${object.id}/delete`} className="text-danger">
