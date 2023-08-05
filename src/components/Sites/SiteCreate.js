@@ -1,3 +1,4 @@
+//#region IMPORTS
 import React, { useContext, useEffect } from "react";
 import axios from "axios";
 
@@ -13,11 +14,12 @@ import { Card } from "react-bootstrap";
 // fonts awsome icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faList } from "@fortawesome/free-solid-svg-icons";
+//#endregion
 
 function SiteCreate() {
   const navigate = useNavigate();
   const { authState } = useContext(AuthContext);
-
+  //#region FONCTIONS
   // useEffect(() => {
   //   // check if logged in, else redirect to login page
   //   if (!localStorage.getItem("accessToken")) {
@@ -52,7 +54,7 @@ function SiteCreate() {
         }
       });
   };
-
+  //#endregion
   return (
     <Card className="shadow-sm">
       <Card.Header className="p-2 d-flex justify-content-cen">
@@ -64,45 +66,62 @@ function SiteCreate() {
           onSubmit={onSubmit}
           validationSchema={validationSchema}
         >
-          <Form>
-            <div className="mt-2  ">
-              <Field
-                className="form-control "
-                id="title"
-                name="title"
-                placeholder="Nom du site"
-                autoComplete="off"
-              />
-              <ErrorMessage
-                name="title"
-                component="div"
-                className="text-danger text-left "
-              />
-            </div>
+          {(props) => {
+            return (
+              <Form>
+                <div className="mt-2  ">
+                  <Field
+                    className={
+                      "form-control" +
+                      (props.errors.title && props.touched.title
+                        ? " is-invalid"
+                        : "")
+                    }
+                    id="title"
+                    name="title"
+                    placeholder="Nom du site"
+                    autoComplete="off"
+                  />
+                  <ErrorMessage
+                    name="title"
+                    component="div"
+                    className="text-danger text-left "
+                  />
+                </div>
 
-            <div className="mt-2  ">
-              <Field
-                className="form-control "
-                id="description"
-                name="description"
-                placeholder="Description du site"
-                autoComplete="off"
-                as="textarea"
-              />
-              <ErrorMessage
-                name="description"
-                component="div"
-                className="text-danger text-left "
-              />
-            </div>
+                <div className="mt-2  ">
+                  <Field
+                    className={
+                      "form-control" +
+                      (props.errors.description && props.touched.description
+                        ? " is-invalid"
+                        : "")
+                    }
+                    id="description"
+                    name="description"
+                    placeholder="Description du site"
+                    autoComplete="off"
+                    as="textarea"
+                  />
+                  <ErrorMessage
+                    name="description"
+                    component="div"
+                    className="text-danger text-left "
+                  />
+                </div>
 
-            <div className="mt-2  d-flex justify-content-end">
-              <button className="btn btn-sm btn-outline-primary " type="submit">
-                <FontAwesomeIcon icon={faPlus} className="mr-2" />
-                Créer
-              </button>
-            </div>
-          </Form>
+                <div className="mt-2  d-flex justify-content-end">
+                  <button
+                    className="btn btn-sm btn-outline-primary "
+                    type="submit"
+                  >
+                    <FontAwesomeIcon icon={faPlus} className="mr-2" />
+                    Créer
+                  </button>
+                </div>
+              </Form>
+            );
+          }}
         </Formik>
       </Card.Body>
     </Card>

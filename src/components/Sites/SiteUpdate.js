@@ -1,3 +1,4 @@
+//#region IMPORTS
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 
@@ -13,26 +14,45 @@ import { Card } from "react-bootstrap";
 // fonts awsome icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faList } from "@fortawesome/free-solid-svg-icons";
-
+//#endregion
 function SiteUpdate() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { authState } = useContext(AuthContext);
+  const [object, setObject] = useState({});
+
+  useEffect(() => {
+    // check if logged in, else redirect to login page
+    // if (!localStorage.getItem("accessToken")) {
+    //   Navigate("/auth");
+    // } else {
+    axios
+      .get(
+        `${process.env.REACT_APP_BASE_URL}/sites/byId/${id}`
+        // , {
+        // headers: { accessToken: localStorage.getItem("accessToken") },
+        // }
+      )
+      .then((response) => {
+        if (response.data.error) {
+          alert(response.data.error);
+        } else {
+          console.log(response.data);
+          setObject(response.data);
+        }
+      });
+    // }
+  }, []);
 
   const initialValues = {
-    title: "",
-    description: "",
+    title: object.title || "",
+    description: object.description || "",
   };
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().min(2).max(64).required(),
     description: Yup.string().max(255),
   });
-
-  // const formik = useFormik({
-  //   initialValues: initialValues,
-  //   validationSchema: validationSchema,
-  // });
 
   const onSubmit = (data) => {
     axios
@@ -59,47 +79,21 @@ function SiteUpdate() {
       </Card.Header>
       <Card.Body>
         <Formik
+          enableReinitialize={true}
           initialValues={initialValues}
           onSubmit={onSubmit}
           validationSchema={validationSchema}
         >
-          {function Rnder({ errors, touched, isSubmitting, setFieldValue }) {
-            const [_title, _setTitle] = useState("");
-            const [_description, _setDescription] = useState("");
-
-            useEffect(() => {
-              // check if logged in, else redirect to login page
-              // if (!localStorage.getItem("accessToken")) {
-              //   Navigate("/auth");
-              // } else {
-              axios
-                .get(
-                  `${process.env.REACT_APP_BASE_URL}/sites/byId/${id}`
-                  // , {
-                  // headers: { accessToken: localStorage.getItem("accessToken") },
-                  // }
-                )
-                .then((response) => {
-                  if (response.data.error) {
-                    alert(response.data.error);
-                  } else {
-                    setFieldValue("title", response.data.title, true);
-                    setFieldValue(
-                      "description",
-                      response.data.description,
-                      true
-                    );
-                  }
-                });
-              // }
-            }, []);
+          {(props) => {
             return (
               <Form>
                 <div className="mt-2  ">
                   <Field
                     className={
                       "form-control" +
-                      (errors.title && touched.title ? " is-invalid" : "")
+                      (props.values.title && props.touched.title
+                        ? " is-invalid"
+                        : "")
                     }
                     id="title"
                     name="title"
@@ -117,16 +111,15 @@ function SiteUpdate() {
                   <Field
                     className={
                       "form-control" +
-                      (errors.description && touched.title ? " is-invalid" : "")
+                      (props.errors.description && props.touched.title
+                        ? " is-invalid"
+                        : "")
                     }
                     id="description"
                     name="description"
                     placeholder="Description du site"
                     autoComplete="off"
                     as="textarea"
-                    // value={props.values.description}
-                    // onChange={props.handleChange}
-                    // onBlur={props.handleBlur}
                   />
                   <ErrorMessage
                     name="description"
