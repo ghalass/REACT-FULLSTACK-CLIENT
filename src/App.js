@@ -79,7 +79,7 @@ function App() {
   //     });
   // }, []);
   return (
-    <div className="App">
+    <div className="App overflow-hidden">
       <AuthContext.Provider value={{ authState, setAuthState }}>
         <Router>
           <NavBar />
@@ -89,10 +89,9 @@ function App() {
             hideProgressBar={false}
             newestOnTop={true}
             closeOnClick={true}
-            rtl={false}
-            pauseOnFocusLoss={false}
-            draggable={false}
             pauseOnHover={false}
+            draggable={false}
+            progress={undefined}
             theme="light"
           />
           <Routes>

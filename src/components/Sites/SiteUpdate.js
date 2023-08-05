@@ -66,10 +66,28 @@ function SiteUpdate() {
       )
       .then((response) => {
         if (response.data.error) {
-          toast.error(response.data.error);
+          toast.error(response.data.error, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+            theme: "light",
+          });
         } else {
           navigate(-1);
-          toast.info("Modifié avec succès.");
+          toast.info("Modifié avec succès.", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+            theme: "light",
+          });
         }
       });
   };
@@ -93,7 +111,7 @@ function SiteUpdate() {
                   <Field
                     className={
                       "form-control" +
-                      (props.values.title && props.touched.title
+                      (props.errors.title && props.touched.title
                         ? " is-invalid"
                         : "")
                     }

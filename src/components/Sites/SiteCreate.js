@@ -17,7 +17,7 @@ import { faPlus, faList } from "@fortawesome/free-solid-svg-icons";
 //#endregion
 
 import { toast } from "react-toastify";
-
+import { motion } from "framer-motion";
 function SiteCreate() {
   const navigate = useNavigate();
   const { authState } = useContext(AuthContext);
@@ -59,75 +59,114 @@ function SiteCreate() {
   };
   //#endregion
   return (
-    <Card className="shadow-sm">
-      <Card.Header className="p-2 d-flex justify-content-cen">
-        <span>Ajouter un nouveau</span>
-      </Card.Header>
-      <Card.Body>
-        <Formik
-          initialValues={initialValues}
-          onSubmit={onSubmit}
-          validationSchema={validationSchema}
-        >
-          {(props) => {
-            return (
-              <Form>
-                <div className="mt-2  ">
-                  <Field
-                    className={
-                      "form-control" +
-                      (props.errors.title && props.touched.title
-                        ? " is-invalid"
-                        : "")
-                    }
-                    id="title"
-                    name="title"
-                    placeholder="Nom du site"
-                    autoComplete="off"
-                  />
-                  <ErrorMessage
-                    name="title"
-                    component="div"
-                    className="text-danger text-left "
-                  />
-                </div>
-
-                <div className="mt-2  ">
-                  <Field
-                    className={
-                      "form-control" +
-                      (props.errors.description && props.touched.description
-                        ? " is-invalid"
-                        : "")
-                    }
-                    id="description"
-                    name="description"
-                    placeholder="Description du site"
-                    autoComplete="off"
-                    as="textarea"
-                  />
-                  <ErrorMessage
-                    name="description"
-                    component="div"
-                    className="text-danger text-left "
-                  />
-                </div>
-
-                <div className="mt-2  d-flex justify-content-end">
-                  <button
-                    className="btn btn-sm btn-outline-primary "
-                    type="submit"
+    <motion.div
+      initial={{ x: "100vw" }}
+      animate={{ x: 0 }}
+      transition={{
+        delay: 0,
+        duration: 0.5,
+        type: "spring",
+        // stiffness: 20,
+      }}
+    >
+      <Card className="shadow-sm">
+        <Card.Header className="p-2 d-flex justify-content-cen">
+          <span>Ajouter un nouveau</span>
+        </Card.Header>
+        <Card.Body>
+          <Formik
+            initialValues={initialValues}
+            onSubmit={onSubmit}
+            validationSchema={validationSchema}
+          >
+            {(props) => {
+              return (
+                <Form>
+                  <motion.div
+                    className="mt-2  "
+                    initial={{ x: "100vw" }}
+                    animate={{ x: 0 }}
+                    transition={{
+                      delay: 0,
+                      duration: 0.5,
+                      type: "spring",
+                      // stiffness: 20,
+                    }}
                   >
-                    <FontAwesomeIcon icon={faPlus} className="mr-2" />
-                    Créer
-                  </button>
-                </div>
-              </Form>
-            );
-          }}
-        </Formik>
-      </Card.Body>
-    </Card>
+                    <Field
+                      className={
+                        "form-control" +
+                        (props.errors.title && props.touched.title
+                          ? " is-invalid"
+                          : "")
+                      }
+                      id="title"
+                      name="title"
+                      placeholder="Nom du site"
+                      autoComplete="off"
+                    />
+                    <ErrorMessage
+                      name="title"
+                      component="div"
+                      className="text-danger text-left "
+                    />
+                  </motion.div>
+
+                  <motion.div
+                    className="mt-2  "
+                    initial={{ x: "100vw" }}
+                    animate={{ x: 0 }}
+                    transition={{
+                      delay: 0.25,
+                      duration: 0.5,
+                      type: "spring",
+                      // stiffness: 20,
+                    }}
+                  >
+                    <Field
+                      className={
+                        "form-control" +
+                        (props.errors.description && props.touched.description
+                          ? " is-invalid"
+                          : "")
+                      }
+                      id="description"
+                      name="description"
+                      placeholder="Description du site"
+                      autoComplete="off"
+                      as="textarea"
+                    />
+                    <ErrorMessage
+                      name="description"
+                      component="div"
+                      className="text-danger text-left "
+                    />
+                  </motion.div>
+
+                  <div className="mt-2  d-flex justify-content-end">
+                    <motion.button
+                      className="btn btn-sm btn-outline-primary "
+                      type="submit"
+                      initial={{ x: "100vw" }}
+                      animate={{ x: 0 }}
+                      transition={{
+                        delay: 0.5,
+                        duration: 0.5,
+                        type: "spring",
+                        // stiffness: 20,
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faPlus} className="mr-2" />
+                      Créer
+                    </motion.button>
+                  </div>
+                </Form>
+              );
+            }}
+          </Formik>
+        </Card.Body>
+      </Card>
+    </motion.div>
   );
 }
 
