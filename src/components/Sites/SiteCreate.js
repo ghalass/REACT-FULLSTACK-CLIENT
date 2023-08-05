@@ -16,6 +16,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faList } from "@fortawesome/free-solid-svg-icons";
 //#endregion
 
+import { toast } from "react-toastify";
+
 function SiteCreate() {
   const navigate = useNavigate();
   const { authState } = useContext(AuthContext);
@@ -48,9 +50,10 @@ function SiteCreate() {
       )
       .then((response) => {
         if (response.data.error) {
-          alert(response.data.error);
+          toast.error(response.data.error);
         } else {
           navigate(-1);
+          toast.success("Ajouté avec succès.");
         }
       });
   };

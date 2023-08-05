@@ -4,6 +4,7 @@ import { Card } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 import frLocale from "moment/locale/fr";
+import { toast } from "react-toastify";
 
 function SiteDelete() {
   const { id } = useParams();
@@ -41,9 +42,10 @@ function SiteDelete() {
       )
       .then((response) => {
         if (response.data.error) {
-          alert(response.data.error);
+          toast.error(response.data.error);
         } else {
           navigate(-1);
+          toast.info("Supprimé avec succès.");
         }
       });
   };

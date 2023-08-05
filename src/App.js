@@ -46,6 +46,10 @@ import EnginUpdate from "./components/Engins/EnginUpdate";
 import EnginDelete from "./components/Engins/EnginDelete";
 import EnginDetails from "./components/Engins/EnginDetails";
 
+//
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function App() {
   // console.log(process.env.REACT_APP_BASE_URL);
   // to be able to access to the authstate evry where
@@ -79,6 +83,18 @@ function App() {
       <AuthContext.Provider value={{ authState, setAuthState }}>
         <Router>
           <NavBar />
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={true}
+            closeOnClick={true}
+            rtl={false}
+            pauseOnFocusLoss={false}
+            draggable={false}
+            pauseOnHover={false}
+            theme="light"
+          />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/posts" exact element={<Posts />} />

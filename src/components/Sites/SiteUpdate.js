@@ -14,6 +14,7 @@ import { Card } from "react-bootstrap";
 // fonts awsome icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faList } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 //#endregion
 function SiteUpdate() {
   const { id } = useParams();
@@ -65,9 +66,10 @@ function SiteUpdate() {
       )
       .then((response) => {
         if (response.data.error) {
-          alert(response.data.error);
+          toast.error(response.data.error);
         } else {
           navigate(-1);
+          toast.info("Modifié avec succès.");
         }
       });
   };
