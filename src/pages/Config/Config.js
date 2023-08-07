@@ -10,7 +10,6 @@ import {
   faTruckPlane,
   faTruckMonster,
 } from "@fortawesome/free-solid-svg-icons";
-import { motion } from "framer-motion";
 
 function Config() {
   const location = useLocation();
@@ -23,12 +22,7 @@ function Config() {
   });
 
   return (
-    <motion.div
-      className=""
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1, stiffness: 120 }}
-    >
+    <div className="">
       {/* COMMUN PART */}
       <Nav
         defaultActiveKey="/config/sites"
@@ -97,17 +91,12 @@ function Config() {
       </Nav>
 
       <div className="mt-2">
-        <motion.div
-          className="border-bottom py-2 mb-2"
-          // initial={{ x: "100vw" }}
-          // animate={{ x: 0 }}
-          // transition={{ delay: 0.5, stiffness: 0 }}
-        >
+        <div className="border-bottom py-2 mb-2">
           <h5 className="text-left mx-3">Configurations des données de base</h5>
-        </motion.div>
+        </div>
         <Outlet />
       </div>
-    </motion.div>
+    </div>
   );
 }
 

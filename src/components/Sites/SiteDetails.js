@@ -1,51 +1,52 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import {
+  faPenNib,
+  faPlus,
+  faTrashCan,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from "react";
 import { Card } from "react-bootstrap";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import moment from "moment";
-import frLocale from "moment/locale/fr";
 
-function SiteDetails() {
-  const { id } = useParams();
-  const [site, setSite] = useState({});
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    axios
-      .get(
-        `${process.env.REACT_APP_BASE_URL}/sites/byId/${id}`
-        // , {
-        // headers: { accessToken: localStorage.getItem("accessToken") },
-        // }
-      )
-      .then((response) => {
-        setSite(response.data);
-      });
-  }, []);
-
+export const SiteDetails = ({ setOperation, object }) => {
   return (
-    <Card className="shadow-sm">
-      <Card.Header className="p-2 d-flex justify-content-between">
-        <span className="">Détails </span>
-      </Card.Header>
-      <Card.Body className="p-2">
-        <Card className="text-uppercase">
-          <Card.Body>
-            <Card.Title>{site.title}</Card.Title>
-            <Card.Subtitle className="mb-2 text-muted ">
-              Created : {moment(site.createdAt).fromNow()} | Updated :{" "}
-              {moment(site.updatedAt).fromNow()}
-            </Card.Subtitle>
-
-            <Card.Text>{site.description}</Card.Text>
-            <div className="border-top pt-2">
-              <h6>liste des engins sur ce site</h6>
+    <div>
+      <Card className="mb-2 shadow-sm">
+        <Card.Body className="pt-2">
+          <div className="d-flex justify-content-between border-bottom text-center pb-2">
+            <div>Détails de l'élément sélectionné</div>
+            <div className="">
+              <FontAwesomeIcon
+                icon={faPlus}
+                className="mx-2 btn btn-sm btn-outline-primary"
+                onClick={() => {
+                  setOperation("add");
+                }}
+              />
+              <FontAwesomeIcon
+                icon={faPenNib}
+                className="mx-2 btn btn-sm btn-outline-primary"
+                onClick={() => {
+                  setOperation("update");
+                }}
+              />
+              <FontAwesomeIcon
+                icon={faTrashCan}
+                className="mx-2 btn btn-sm btn-outline-danger"
+                onClick={() => {
+                  setOperation("delete");
+                }}
+              />
             </div>
-          </Card.Body>
-        </Card>
-      </Card.Body>
-    </Card>
-  );
-}
+          </div>
+          <span>ID : {object.id}</span>
+          <br />
+          <span>Title : {object.title}</span>
+          <br />
+          <span>Description : {object.description}</span>
 
-export default SiteDetails;
+          <br />
+        </Card.Body>
+      </Card>
+    </div>
+  );
+};

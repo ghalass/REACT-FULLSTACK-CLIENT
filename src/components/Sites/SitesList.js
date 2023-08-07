@@ -1,250 +1,108 @@
-//#region IMPORTS
-import React, { useEffect } from "react";
-import { Button, Card, Form, ListGroup, Pagination } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import { useState } from "react";
-import moment from "moment";
-import frLocale from "moment/locale/fr"; // fonts awsome icons
-// fonts awsome icons
+import React from "react";
+import DataTable from "react-data-table-component";
+import LoadingSpinner from "../../helpers/LoadingSpinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPenNib,
-  faTrashCan,
-  faInfoCircle,
-  faL,
-} from "@fortawesome/free-solid-svg-icons";
-
-import { motion } from "framer-motion";
-//#endregion
-
-const containerVariant = {
-  hidden: {
-    opacity: 0,
-    x: "-100vw",
-  },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      delay: 0,
-      duration: 0.5,
-      type: "spring",
-      when: "beforeChildren",
-    },
-  },
-};
-
-const searchDivVariant = {
-  hidden: {
-    opacity: 0,
-    x: "-100vw",
-  },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      delay: 0.5,
-      duration: 0.5,
-      type: "spring",
-    },
-  },
-};
-
-const searchDivButtonVariant = {
-  hidden: {
-    opacity: 0,
-    x: "-100vw",
-  },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      delay: 0.25,
-      duration: 0.5,
-      type: "spring",
-    },
-  },
-};
-
-const tableVariant = {
-  hidden: {
-    opacity: 0,
-  },
-  visible: {
-    opacity: 1,
-    transition: {
-      delay: 0,
-      duration: 0.75,
-      type: "spring",
-      stiffness: 200,
-    },
-  },
-  hover: {
-    scale: 1.3,
-    color: "#eee",
-    originX: 0,
-    // textShadow: "0px 0px 8px rgb(255,255,255)",
-    // boxShadow: "0px 0px 8px rgb(255,255,255)",
-  },
-};
-function SitesList() {
-  moment.locale("fr", [frLocale]); // can pass in 'en', 'fr', or 'es'
-  //#region STATES
-  const [listOfObjects, setListOfObjects] = useState([]);
-  const [nonFiltredData, setNonFiltredData] = useState();
-  const [search, setSearch] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
-  //#endregion
-
-  //#region FONCTIONS
-  useEffect(() => {
-    setIsLoading(true);
-    axios.get(`${process.env.REACT_APP_BASE_URL}/sites`).then((response) => {
-      setIsLoading(false);
-      if (!response.data.error) {
-        setListOfObjects(response.data);
-        setNonFiltredData(response.data);
-      } else {
-        alert(response.data.error);
-      }
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { Alert } from "react-bootstrap";
+import moment from "moment";
+export const SitesList = ({
+  records,
+  setRecords,
+  isLoading,
+  setObject,
+  listOfObjects,
+  setOperation,
+}) => {
+  //   console.log(props);
+  const handleSearch = (e) => {
+    const txtSeach = e.target.value;
+    const newData = listOfObjects.filter((r) => {
+      return (
+        r.title.toLowerCase().includes(txtSeach.toLowerCase()) ||
+        r.description.toLowerCase().includes(txtSeach.toLowerCase()) ||
+        r.createdAt.toLowerCase().includes(txtSeach.toLowerCase()) ||
+        r.updatedAt.toLowerCase().includes(txtSeach.toLowerCase())
+      );
     });
-  }, []);
-
-  const OnSearch = () => {
-    let result = [];
-    if (search.trim() !== "") {
-      result = listOfObjects.filter((s) => {
-        return s.title.toLowerCase().includes(search.toLowerCase());
-      });
-      setListOfObjects(result);
-    } else {
-      setListOfObjects(nonFiltredData);
-    }
+    setRecords(newData);
   };
-  //#endregion
 
-  // Pagination
+  const columns = [
+    {
+      name: "Title",
+      selector: (row) => row.title.toUpperCase(),
+      sortable: true,
+    },
+    {
+      name: "Description",
+      selector: (row) => row.description.toUpperCase(),
+      sortable: true,
+    },
+    {
+      name: "CreatedAt",
+      selector: (row) => moment(row.createdAt).format("ll"),
+      sortable: true,
+    },
+    {
+      name: "UpdatedAt",
+      selector: (row) => moment(row.updatedAt).format("ll"),
+      sortable: true,
+    },
+  ];
   return (
-    <motion.div variants={containerVariant}>
-      <motion.div className="mb-2 d-flex justify-content-start">
-        <motion.div variants={searchDivVariant}>
-          <Form.Group>
-            <Form.Control
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Chercher ..."
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  OnSearch();
-                }
-              }}
-            />
-          </Form.Group>
-        </motion.div>
-        <motion.button
-          className="btn btn-sm btn-outline-primary ml-2"
-          onClick={OnSearch}
-          variants={searchDivButtonVariant}
-        >
-          Chercher
-        </motion.button>
-      </motion.div>
-
-      <motion.div
-        transition={{
-          delay: 0,
-          duration: 0.75,
-          type: "spring",
-          when: "beforeChildren",
-          // stiffness: 20,
+    <>
+      <div className="d-flex justify-content-end">
+        <div>
+          <input
+            type="text"
+            placeholder="Rechercher ..."
+            className="form-control float-left"
+            onChange={handleSearch}
+          />
+        </div>
+      </div>
+      <DataTable
+        // title="Liste des sites :"
+        noDataComponent={
+          <Alert key={"idx"} variant={"info"} className="my-2">
+            <FontAwesomeIcon icon={faInfoCircle} className="mr-2" />
+            Il n'y a aucun enregistrement à afficher
+          </Alert>
+        }
+        columns={columns}
+        data={records}
+        dense="true"
+        // direction="auto"
+        fixedHeader="true"
+        fixedHeaderScrollHeight="400px"
+        highlightOnHover="true"
+        pointerOnHover="true"
+        responsive="true"
+        // subHeader="true"
+        // subHeaderAlign="right"
+        // subHeaderWrap="true"
+        persistTableHead="true"
+        selectableRows="true"
+        selectableRowsSingle="true"
+        selectableRowsHighlight="true"
+        selectableRowsNoSelectAll="true"
+        selectableRowsVisibleOnly="true"
+        progressPending={isLoading}
+        progressComponent={<LoadingSpinner />}
+        onRowClicked={(row, event) => {
+          // console.log(event);
+          // setObject(row);
         }}
-      >
-        <Card className="mb-2 shadow-sm">
-          <Card.Header className="p-2 d-flex justify-content-between">
-            <Link to={""} className="text-dark">
-              Liste
-            </Link>
-          </Card.Header>
-          <Card.Body>
-            {isLoading ? (
-              "Loading ..."
-            ) : (
-              <ListGroup variant="flush" className="">
-                {!listOfObjects.length ? (
-                  <div className="alert alert-info">
-                    <FontAwesomeIcon icon={faInfoCircle} className="mx-2 " />
-                    Aucun enregistrement n'est trouvé !{" "}
-                  </div>
-                ) : (
-                  listOfObjects.map((object, key) => {
-                    return (
-                      <ListGroup.Item key={key}>
-                        <div className="row d-flex justify-content-between">
-                          <motion.div
-                            className="col-8 "
-                            variants={tableVariant}
-                            animate="visible"
-                            whileHover="hover"
-                          >
-                            <Link
-                              to={`${object.id}/details`}
-                              className="text-uppercase text-decoration-none"
-                            >
-                              {object.title}
-                            </Link>
-                          </motion.div>
-
-                          <div className="col-4 d-flex  justify-content-around border-left">
-                            <Link
-                              to={`${object.id}/delete`}
-                              className="text-danger"
-                            >
-                              <FontAwesomeIcon
-                                icon={faTrashCan}
-                                className="mx-2 "
-                              />
-                            </Link>
-                            <Link to={`${object.id}/update`} className="">
-                              <FontAwesomeIcon
-                                icon={faPenNib}
-                                className="mx-2 "
-                              />
-                            </Link>
-                          </div>
-                        </div>
-                      </ListGroup.Item>
-                    );
-                  })
-                )}
-              </ListGroup>
-            )}
-          </Card.Body>
-        </Card>
-      </motion.div>
-
-      <motion.div
-        className="d-flex justify-content-start"
-        initial={{ x: "-100vw" }}
-        animate={{ x: 0 }}
-        transition={{
-          delay: 0.75,
-          duration: 0.5,
-          type: "spring",
-          // stiffness: 20,
+        onSelectedRowsChange={({
+          allSelected,
+          selectedCount,
+          selectedRows,
+        }) => {
+          setObject(selectedRows.length !== 0 ? selectedRows[0] : {});
+          setOperation("");
         }}
-      >
-        <Pagination>
-          <Pagination.Item key={1}>1</Pagination.Item>
-          <Pagination.Item key={2} active activeLabel>
-            2
-          </Pagination.Item>
-          <Pagination.Item key={3}>3</Pagination.Item>
-        </Pagination>
-      </motion.div>
-    </motion.div>
+        pagination="true"
+      />
+    </>
   );
-}
-
-export default SitesList;
+};

@@ -19,11 +19,11 @@ import axios from "axios";
 import Config from "./pages/Config/Config";
 //SITES ROUTES
 import Sites from "./pages/Config/Sites";
-import SiteDetails from "./components/Sites/SiteDetails";
-import SiteDelete from "./components/Sites/SiteDelete";
-import SiteUpdate from "./components/Sites/SiteUpdate";
-import SitesList from "./components/Sites/SitesList";
-import SiteCreate from "./components/Sites/SiteCreate";
+// import SiteDetails from "./components/Sites/SiteDetails";
+// import SiteDelete from "./components/Sites/SiteDelete";
+// import SiteUpdate from "./components/Sites/SiteUpdate";
+// import SitesList from "./components/Sites/SitesList";
+// import SiteCreate from "./components/Sites/SiteCreate";
 //TypeParcs ROUTES
 import TypeParcs from "./pages/Config/TypeParcs";
 import TypeParcsList from "./components/TypeParcs/TypeParcsList";
@@ -90,6 +90,7 @@ function App() {
             newestOnTop={true}
             closeOnClick={true}
             pauseOnHover={false}
+            pauseOnFocusLoss={false}
             draggable={false}
             progress={undefined}
             theme="light"
@@ -108,11 +109,11 @@ function App() {
             <Route path="config" exact element={<Config />}>
               {/* SITES  */}
               <Route path="sites" element={<Sites />}>
-                <Route index exact element={<SitesList />} />
-                <Route path="create" element={<SiteCreate />} />
-                <Route path=":id/details" element={<SiteDetails />} />
-                <Route path=":id/update" element={<SiteUpdate />} />
-                <Route path=":id/delete" element={<SiteDelete />} />
+                {/* <Route index exact element={<SitesList />} /> */}
+                {/* <Route path="create" element={<SiteCreate />} /> */}
+                {/* <Route path=":id/details" element={<SiteDetails />} /> */}
+                {/* <Route path=":id/update" element={<SiteUpdate />} /> */}
+                {/* <Route path=":id/delete" element={<SiteDelete />} /> */}
               </Route>
 
               {/* TYPEPARCS  */}
