@@ -38,8 +38,8 @@ export const SiteDetails = ({ setOperation, object }) => {
               />
             </div>
           </div>
-          <span>ID : {object.id}</span>
-          <br />
+          {/* <span>ID : {object.id}</span>
+          <br /> */}
           <span>Title : {object.title}</span>
           <br />
           <span>Description : {object.description}</span>

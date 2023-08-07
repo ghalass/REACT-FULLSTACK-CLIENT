@@ -1,9 +1,11 @@
-import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
+import {
+  Route,
+  createBrowserRouter,
+  RouterProvider,
+  createRoutesFromElements,
+  useRouteError,
+} from "react-router-dom";
 
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-
-import NavBar from "./components/NavBar";
 import Home from "./pages/Home";
 import Posts from "./pages/Posts";
 import Post from "./pages/Post";
@@ -14,16 +16,11 @@ import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import ChangePassword from "./pages/ChangePassword";
 import { AuthContext } from "./helpers/AuthContext";
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState } from "react";
+
 import Config from "./pages/Config/Config";
 //SITES ROUTES
 import Sites from "./pages/Config/Sites";
-// import SiteDetails from "./components/Sites/SiteDetails";
-// import SiteDelete from "./components/Sites/SiteDelete";
-// import SiteUpdate from "./components/Sites/SiteUpdate";
-// import SitesList from "./components/Sites/SitesList";
-// import SiteCreate from "./components/Sites/SiteCreate";
 //TypeParcs ROUTES
 import TypeParcs from "./pages/Config/TypeParcs";
 import TypeParcsList from "./components/TypeParcs/TypeParcsList";
@@ -46,9 +43,64 @@ import EnginUpdate from "./components/Engins/EnginUpdate";
 import EnginDelete from "./components/Engins/EnginDelete";
 import EnginDetails from "./components/Engins/EnginDetails";
 
-//
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { sitesListLoader } from "./components/Sites/sitesListLoader";
+
+import RootLayout from "./pages/layouts/RootLayout";
+import ErrorHelper from "./helpers/ErrorHelper";
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<RootLayout />}>
+      <Route index element={<Home />} />
+      <Route path="posts" exact element={<Posts />} />
+      <Route path="post/:id" exact element={<Post />} />
+      <Route path="createpost" exact element={<CreatePost />} />
+      <Route path="auth" exact element={<Login />} />
+      <Route path="profile/:id" exact element={<Profile />} />
+      <Route path="auth/registration" exact element={<Registration />} />
+      <Route path="changepassword" exact element={<ChangePassword />} />
+
+      {/* START CONFIG */}
+      <Route path="config" exact element={<Config />}>
+        {/* SITES  */}
+        <Route
+          path="sites"
+          element={<Sites />}
+          // loader={sitesListLoader}
+          // errorElement={<ErrorHelper />}
+        />
+
+        {/* TYPEPARCS  */}
+        <Route path="typeparcs" element={<TypeParcs />}>
+          <Route index exact element={<TypeParcsList />} />
+          <Route path="create" element={<TypeParcCreate />} />
+          <Route path=":id/details" element={<TypeParcDetails />} />
+          <Route path=":id/update" element={<TypeParcUpdate />} />
+          <Route path=":id/delete" element={<TypeParcDelete />} />
+        </Route>
+
+        {/* PARCS  */}
+        <Route path="parcs" element={<Parcs />}>
+          <Route index exact element={<ParcsList />} />
+          <Route path="create" element={<ParcCreate />} />
+          <Route path=":id/details" element={<ParcDetails />} />
+          <Route path=":id/update" element={<ParcUpdate />} />
+          <Route path=":id/delete" element={<ParcDelete />} />
+        </Route>
+
+        {/* ENGINS  */}
+        <Route path="engins" element={<Engins />}>
+          <Route index exact element={<EnginsList />} />
+          <Route path="create" element={<EnginCreate />} />
+          <Route path=":id/details" element={<EnginDetails />} />
+          <Route path=":id/update" element={<EnginUpdate />} />
+          <Route path=":id/delete" element={<EnginDelete />} />
+        </Route>
+      </Route>
+
+      <Route path="*" exact element={<PageNotFound />} />
+    </Route>
+  )
+);
 
 function App() {
   // console.log(process.env.REACT_APP_BASE_URL);
@@ -81,72 +133,7 @@ function App() {
   return (
     <div className="App overflow-hidden">
       <AuthContext.Provider value={{ authState, setAuthState }}>
-        <Router>
-          <NavBar />
-          <ToastContainer
-            position="top-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={true}
-            closeOnClick={true}
-            pauseOnHover={false}
-            pauseOnFocusLoss={false}
-            draggable={false}
-            progress={undefined}
-            theme="light"
-          />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/posts" exact element={<Posts />} />
-            <Route path="/post/:id" exact element={<Post />} />
-            <Route path="/createpost" exact element={<CreatePost />} />
-            <Route path="/auth" exact element={<Login />} />
-            <Route path="/profile/:id" exact element={<Profile />} />
-            <Route path="/auth/registration" exact element={<Registration />} />
-            <Route path="/changepassword" exact element={<ChangePassword />} />
-
-            {/* START CONFIG */}
-            <Route path="config" exact element={<Config />}>
-              {/* SITES  */}
-              <Route path="sites" element={<Sites />}>
-                {/* <Route index exact element={<SitesList />} /> */}
-                {/* <Route path="create" element={<SiteCreate />} /> */}
-                {/* <Route path=":id/details" element={<SiteDetails />} /> */}
-                {/* <Route path=":id/update" element={<SiteUpdate />} /> */}
-                {/* <Route path=":id/delete" element={<SiteDelete />} /> */}
-              </Route>
-
-              {/* TYPEPARCS  */}
-              <Route path="typeparcs" element={<TypeParcs />}>
-                <Route index exact element={<TypeParcsList />} />
-                <Route path="create" element={<TypeParcCreate />} />
-                <Route path=":id/details" element={<TypeParcDetails />} />
-                <Route path=":id/update" element={<TypeParcUpdate />} />
-                <Route path=":id/delete" element={<TypeParcDelete />} />
-              </Route>
-
-              {/* PARCS  */}
-              <Route path="parcs" element={<Parcs />}>
-                <Route index exact element={<ParcsList />} />
-                <Route path="create" element={<ParcCreate />} />
-                <Route path=":id/details" element={<ParcDetails />} />
-                <Route path=":id/update" element={<ParcUpdate />} />
-                <Route path=":id/delete" element={<ParcDelete />} />
-              </Route>
-
-              {/* ENGINS  */}
-              <Route path="engins" element={<Engins />}>
-                <Route index exact element={<EnginsList />} />
-                <Route path="create" element={<EnginCreate />} />
-                <Route path=":id/details" element={<EnginDetails />} />
-                <Route path=":id/update" element={<EnginUpdate />} />
-                <Route path=":id/delete" element={<EnginDelete />} />
-              </Route>
-            </Route>
-
-            <Route path="*" exact element={<PageNotFound />} />
-          </Routes>
-        </Router>
+        <RouterProvider router={router} />
       </AuthContext.Provider>
     </div>
   );

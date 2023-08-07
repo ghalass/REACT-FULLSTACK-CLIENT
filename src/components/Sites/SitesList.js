@@ -1,10 +1,11 @@
 import React from "react";
 import DataTable from "react-data-table-component";
-import LoadingSpinner from "../../helpers/LoadingSpinner";
+import LoadingSpinner from "../LoadingSpinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import { Alert } from "react-bootstrap";
+import { faInfoCircle, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { Alert, Card, ListGroup } from "react-bootstrap";
 import moment from "moment";
+import { SitesListSearch } from "./SitesListSearch";
 export const SitesList = ({
   records,
   setRecords,
@@ -13,20 +14,6 @@ export const SitesList = ({
   listOfObjects,
   setOperation,
 }) => {
-  //   console.log(props);
-  const handleSearch = (e) => {
-    const txtSeach = e.target.value;
-    const newData = listOfObjects.filter((r) => {
-      return (
-        r.title.toLowerCase().includes(txtSeach.toLowerCase()) ||
-        r.description.toLowerCase().includes(txtSeach.toLowerCase()) ||
-        r.createdAt.toLowerCase().includes(txtSeach.toLowerCase()) ||
-        r.updatedAt.toLowerCase().includes(txtSeach.toLowerCase())
-      );
-    });
-    setRecords(newData);
-  };
-
   const columns = [
     {
       name: "Title",
@@ -51,58 +38,69 @@ export const SitesList = ({
   ];
   return (
     <>
-      <div className="d-flex justify-content-end">
-        <div>
-          <input
-            type="text"
-            placeholder="Rechercher ..."
-            className="form-control float-left"
-            onChange={handleSearch}
+      <Card className="mb-2 shadow-sm">
+        <Card.Header className="p-2 d-flex justify-content-between">
+          Liste
+          <FontAwesomeIcon
+            icon={faPlus}
+            className="mx-2 btn btn-sm btn-outline-primary"
+            onClick={() => {
+              setOperation("add");
+              setObject({});
+            }}
           />
-        </div>
-      </div>
-      <DataTable
-        // title="Liste des sites :"
-        noDataComponent={
-          <Alert key={"idx"} variant={"info"} className="my-2">
-            <FontAwesomeIcon icon={faInfoCircle} className="mr-2" />
-            Il n'y a aucun enregistrement à afficher
-          </Alert>
-        }
-        columns={columns}
-        data={records}
-        dense="true"
-        // direction="auto"
-        fixedHeader="true"
-        fixedHeaderScrollHeight="400px"
-        highlightOnHover="true"
-        pointerOnHover="true"
-        responsive="true"
-        // subHeader="true"
-        // subHeaderAlign="right"
-        // subHeaderWrap="true"
-        persistTableHead="true"
-        selectableRows="true"
-        selectableRowsSingle="true"
-        selectableRowsHighlight="true"
-        selectableRowsNoSelectAll="true"
-        selectableRowsVisibleOnly="true"
-        progressPending={isLoading}
-        progressComponent={<LoadingSpinner />}
-        onRowClicked={(row, event) => {
-          // console.log(event);
-          // setObject(row);
-        }}
-        onSelectedRowsChange={({
-          allSelected,
-          selectedCount,
-          selectedRows,
-        }) => {
-          setObject(selectedRows.length !== 0 ? selectedRows[0] : {});
-          setOperation("");
-        }}
-        pagination="true"
-      />
+        </Card.Header>
+        <Card.Body>
+          <ListGroup variant="flush" className="">
+            <SitesListSearch
+              listOfObjects={listOfObjects}
+              setRecords={setRecords}
+            />
+            <DataTable
+              // title="Liste des sites :"
+              noDataComponent={
+                <Alert key={"idx"} variant={"info"} className="my-2">
+                  <FontAwesomeIcon icon={faInfoCircle} className="mr-2" />
+                  Il n'y a aucun enregistrement à afficher
+                </Alert>
+              }
+              columns={columns}
+              data={records}
+              dense="true"
+              // direction="auto"
+              fixedHeader="true"
+              fixedHeaderScrollHeight="400px"
+              highlightOnHover="true"
+              pointerOnHover="true"
+              responsive="true"
+              // subHeader="true"
+              // subHeaderAlign="right"
+              // subHeaderWrap="true"
+              persistTableHead="true"
+              selectableRows="true"
+              selectableRowsSingle="true"
+              selectableRowsHighlight="true"
+              selectableRowsNoSelectAll="true"
+              selectableRowsVisibleOnly="true"
+              progressPending={isLoading}
+              progressComponent={<LoadingSpinner />}
+              onRowClicked={(row, event) => {
+                // console.log(event);
+                // setObject(row);
+              }}
+              onSelectedRowsChange={({
+                allSelected,
+                selectedCount,
+                selectedRows,
+              }) => {
+                setObject(selectedRows.length !== 0 ? selectedRows[0] : {});
+                setOperation("");
+              }}
+              pagination="true"
+            />
+          </ListGroup>
+        </Card.Body>
+      </Card>
     </>
   );
 };
