@@ -1,50 +1,47 @@
-import {
-  faPenNib,
-  faPlus,
-  faTrashCan,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
-
+import { SiteDetailsEngins } from "./SiteDetailsEngins";
+import { SiteDetailsHeader } from "./SiteDetailsHeader";
+import { LoadingSpinner } from "../LoadingSpinner";
 export const SiteDetails = ({ setOperation, object }) => {
+  const [enginsList, setEnginsList] = useState([]);
+  const [IsLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    setIsLoading(true);
+    axios
+      .get(`${process.env.REACT_APP_BASE_URL}/engins/bySiteId/${object.id}`)
+      .then((response) => {
+        if (!response.data.error) {
+          setEnginsList(response.data);
+        } else {
+          alert(response.data.error);
+        }
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1000);
+      });
+  }, [object]);
+
   return (
     <div>
       <Card className="mb-2 shadow-sm">
         <Card.Body className="pt-2">
-          <div className="d-flex justify-content-between border-bottom text-center pb-2">
-            <div>Détails de l'élément sélectionné</div>
-            <div className="">
-              <FontAwesomeIcon
-                icon={faPlus}
-                className="mx-2 btn btn-sm btn-outline-primary"
-                onClick={() => {
-                  setOperation("add");
-                }}
-              />
-              <FontAwesomeIcon
-                icon={faPenNib}
-                className="mx-2 btn btn-sm btn-outline-primary"
-                onClick={() => {
-                  setOperation("update");
-                }}
-              />
-              <FontAwesomeIcon
-                icon={faTrashCan}
-                className="mx-2 btn btn-sm btn-outline-danger"
-                onClick={() => {
-                  setOperation("delete");
-                }}
-              />
+          <SiteDetailsHeader setOperation={setOperation} object={object} />
+          <div className="border-top mt-2">
+            <div className="text-center">
+              <h6 className="border-bottom d-inline">
+                Liste des engins sur ce site
+              </h6>
             </div>
+            {IsLoading ? (
+              <div className="d-flex justify-content-center">
+                <LoadingSpinner />
+              </div>
+            ) : (
+              <SiteDetailsEngins object={object} enginsList={enginsList} />
+            )}
           </div>
-          {/* <span>ID : {object.id}</span>
-          <br /> */}
-          <span>Title : {object.title}</span>
-          <br />
-          <span>Description : {object.description}</span>
-
-          <br />
         </Card.Body>
       </Card>
     </div>

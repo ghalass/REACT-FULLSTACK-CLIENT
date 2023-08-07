@@ -1,6 +1,6 @@
 import React from "react";
 import DataTable from "react-data-table-component";
-import LoadingSpinner from "../LoadingSpinner";
+import { LoadingSpinner } from "../LoadingSpinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Alert, Card, ListGroup } from "react-bootstrap";

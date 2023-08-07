@@ -1,13 +1,16 @@
 import React from "react";
 import { Spinner } from "react-bootstrap";
 
-function LoadingSpinner() {
+export const LoadingSpinner = () => {
   return (
-    <div className="my-4 d-flex">
-      <Spinner animation="grow" variant="info" />
-      <div className="mt-1 ml-2">Loading...</div>
+    <div className="d-flex my-4">
+      <Spinner
+        className="mt-1 mx-1"
+        animation="grow"
+        variant="info"
+        size="sm"
+      />
+      <div className="">Loading...</div>
     </div>
   );
-}
-
-export default LoadingSpinner;
+};
