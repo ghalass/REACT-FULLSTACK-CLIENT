@@ -1,0 +1,109 @@
+:root {
+  --color_000: #ffffff;
+  --color_002: #fd8c73;
+  --color_003: #f8f9fa;
+  --bgColor_001: #eaedf1;
+  --bgColor_002: #f6f8fa;
+  --bgColor_003: #f3f4f6;
+}
+* {
+  /* font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif !important; */
+}
+body {
+  background-color: var(--color_000) !important;
+}
+
+.App {
+  text-align: center;
+}
+
+.onHover {
+  cursor: pointer;
+}
+
+.onHover:hover {
+  border-bottom: 2px solid var(--color_002);
+  background-color: var(--color_001);
+  text-decoration: none;
+}
+
+.onHoverLocal {
+  cursor: pointer;
+}
+
+.onHoverLocal:hover,
+.onHoverLocal:hover > a {
+  border-bottom: 2px solid #cbcaf1;
+  background-color: var(bgColor_002);
+  text-decoration: none;
+}
+
+.dropdown-menu {
+  right: 0;
+  left: auto;
+}
+.AppHeader-localBar {
+  padding: 4px 8px !important;
+  padding-bottom: 0px !important;
+  background-color: var(--color_003) !important;
+}
+
+.AppHeader-localBar a {
+  text-decoration: none !important;
+  color: black !important;
+  padding: 8px 0px !important;
+}
+.AppHeader-localBar a span {
+  color: gray;
+  padding: 4px 8px !important;
+  border-radius: 5px !important;
+}
+
+.AppHeader-localBar a:hover span {
+  background-color: var(--bgColor_001) !important;
+  color: black !important;
+}
+
+.activeLink {
+  border-bottom: 2px solid var(--color_002) !important;
+}
+
+.activeLink > span {
+  color: black !important;
+}
+
+.card-header {
+  background-color: var(--bgColor_002) !important;
+}
+.list-group-item {
+  padding: 6px !important;
+}
+.list-group-item:hover {
+  background-color: var(--bgColor_002) !important;
+}
+.customLink {
+  background-color: var(--bgColor_002) !important;
+}
+.customLink:hover {
+  background-color: var(--bgColor_003) !important;
+}
+
+.paginationBttns {
+  /* width: 80%;
+  height: 40px; */
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+}
+.paginationBttns a {
+  padding: 5px 10px;
+  margin: 2px;
+  border-radius: 5px;
+  border: 1px solid #2b2eff;
+  color: #2b2eff;
+  cursor: pointer;
+}
+ul .aginationBttns {
+  padding-bottom: 0;
+}
